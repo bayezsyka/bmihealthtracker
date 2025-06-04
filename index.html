@@ -563,7 +563,7 @@
                     backgroundColor: '#ffffff'
                 }).then(canvas => {
                     canvas.toBlob(blob => {
-                        const file = new File([blob], 'bmi_result.png', { type: 'image/png' });
+                        const file = new File([blob], `bmi_result_${name}.png`, { type: 'image/png' });
                         if (navigator.share) {
                             navigator.share({
                                 title: 'Hasil BMI',
