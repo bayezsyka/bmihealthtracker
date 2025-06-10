@@ -539,7 +539,7 @@
             const shareTextBtn = document.getElementById('shareTextBtn');
             const shareImageBtn = document.getElementById('shareImageBtn');
 
-            shareTextBtn.addEventListener('click', function() {
+            shareTextBtn.onclick = function() {
                 const shareText = `Hasil BMI\nNama: ${name}\nUsia: ${age} tahun\nJenis Kelamin: ${gender}\nBerat Badan: ${weight} kg\nTinggi Badan: ${(height * 100).toFixed(1)} cm\nBMI: ${bmiValue}\nKategori: ${bmiDetails.category}\nTanggal: ${formatDate(new Date())}\n\nDihitung menggunakan Kalkulator BMI Kesehatan - Kelompok 11`;
                 
                 if (navigator.share) {
@@ -553,9 +553,9 @@
                         alert('Hasil BMI telah disalin ke clipboard. Anda bisa membagikannya melalui aplikasi lain.');
                     }).catch((error) => console.error('Error copying to clipboard:', error));
                 }
-            });
+            };
 
-            shareImageBtn.addEventListener('click', function() {
+            shareImageBtn.onclick = function() {
                 const resultPanel = document.getElementById('resultPanel');
                 html2canvas(resultPanel, {
                     scale: 2, // Increase resolution for better quality
@@ -579,7 +579,7 @@
                         }
                     });
                 }).catch((error) => console.error('Error generating image:', error));
-            });
+            };
         });
     </script>
 </body>
