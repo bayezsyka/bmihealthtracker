@@ -550,14 +550,6 @@
     <script>
         document.body.classList.add('overflow-hidden');
         const splash = document.getElementById('splashScreen');
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeLabel = document.getElementById('darkModeLabel');
-        const historyList = document.getElementById('historyList');
-        const historyEmptyState = document.getElementById('historyEmptyState');
-        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-        const challengeText = document.getElementById('challengeText');
-        const newChallengeBtn = document.getElementById('newChallengeBtn');
-
         const hideSplash = () => {
             if (!splash || splash.classList.contains('splash-hidden')) {
                 document.body.classList.remove('overflow-hidden');
@@ -578,108 +570,6 @@
         });
 
         setTimeout(hideSplash, 4000);
-
-        const challenges = [
-            'Fokus pada tidur berkualitas dengan jadwal teratur selama 7 hari.',
-            'Tambahkan 10 menit peregangan setiap pagi untuk meningkatkan fleksibilitas.',
-            'Catat asupan makan Anda setiap hari dan evaluasi pola makan di akhir minggu.',
-            'Lakukan 3 sesi latihan kekuatan ringan dalam seminggu (contoh: squat, push-up, plank).',
-            'Ganti minuman manis dengan air mineral atau infused water sepanjang minggu.',
-            'Berjalan kaki minimal 8.000 langkah per hari selama tujuh hari berturut-turut.',
-            'Coba resep sehat baru berbahan dasar sayuran dua kali dalam minggu ini.',
-            'Luangkan 15 menit untuk meditasi atau latihan pernapasan setiap hari.',
-            'Kurangi penggunaan gadget 1 jam sebelum tidur untuk memperbaiki kualitas tidur.',
-            'Konsumsi buah minimal dua porsi per hari selama tujuh hari.'
-        ];
-
-        function applyTheme(theme) {
-            if (theme === 'dark') {
-                document.body.classList.add('dark-mode');
-                darkModeLabel.textContent = 'Mode Terang';
-            } else {
-                document.body.classList.remove('dark-mode');
-                darkModeLabel.textContent = 'Mode Gelap';
-            }
-        }
-
-        function loadThemePreference() {
-            const savedTheme = localStorage.getItem('bmi-theme');
-            if (savedTheme) {
-                applyTheme(savedTheme);
-                return savedTheme;
-            }
-
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const theme = prefersDark ? 'dark' : 'light';
-            applyTheme(theme);
-            return theme;
-        }
-
-        let currentTheme = loadThemePreference();
-
-        darkModeToggle.addEventListener('click', () => {
-            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('bmi-theme', currentTheme);
-            applyTheme(currentTheme);
-        });
-
-        function loadHistory() {
-            try {
-                return JSON.parse(localStorage.getItem('bmi-history')) || [];
-            } catch (error) {
-                console.error('Gagal memuat riwayat BMI:', error);
-                return [];
-            }
-        }
-
-        function renderHistory(entries = loadHistory()) {
-            if (!entries.length) {
-                historyEmptyState.classList.remove('hidden');
-                historyList.classList.add('hidden');
-                historyList.innerHTML = '';
-                return;
-            }
-
-            historyEmptyState.classList.add('hidden');
-            historyList.classList.remove('hidden');
-
-            historyList.innerHTML = entries.map(entry => `
-                <div class="history-card">
-                    <h5>${entry.name}</h5>
-                    <p><strong>${entry.bmi}</strong> BMI • ${entry.category}</p>
-                    <p>${formatDate(entry.timestamp)}</p>
-                    <p>${entry.weight} kg / ${entry.height} cm</p>
-                </div>
-            `).join('');
-        }
-
-        function saveHistoryEntry(entry) {
-            const history = loadHistory();
-            history.unshift(entry);
-            if (history.length > 10) {
-                history.length = 10;
-            }
-            localStorage.setItem('bmi-history', JSON.stringify(history));
-            renderHistory(history);
-        }
-
-        function setChallenge(randomize = false) {
-            const history = loadHistory();
-            const seedSource = randomize || history.length === 0 ? Math.random() : parseFloat(history[0].bmi);
-            const index = Math.floor((seedSource * 1000) % challenges.length);
-            challengeText.textContent = challenges[index];
-        }
-
-        clearHistoryBtn.addEventListener('click', () => {
-            localStorage.removeItem('bmi-history');
-            renderHistory([]);
-            setChallenge(true);
-        });
-
-        newChallengeBtn.addEventListener('click', () => setChallenge(true));
-
-        renderHistory();
-        setChallenge();
 
         // Format tanggal
         function formatDate(date) {
